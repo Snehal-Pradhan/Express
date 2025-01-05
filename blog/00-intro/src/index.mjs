@@ -1,6 +1,8 @@
 import express from "express";
 
 const app = express();
+
+app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 // what is a route?
@@ -27,7 +29,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/users", (req, res) => {
-  res.send(mockUser);
+  console.log(req.query);
+  const {
+    query: { filter, value },
+  } = req; // destructuring
+  // undefined values  -> return as usual
+
+  if (filter && value)
+    return res.send(mockUser.filter((user) => user[filter].includes(value)));
+  return res.send(mockUser);
 });
 
 app.listen(PORT, () => {
@@ -45,4 +55,10 @@ app.get("/api/users/:id", (req, res) => {
     return res.sendStatus(404);
   }
   res.send(findUser);
+});
+
+// post request
+app.post("/api/users", (req, res) => {
+  console.log(req.body);
+  return res.send(200);
 });
