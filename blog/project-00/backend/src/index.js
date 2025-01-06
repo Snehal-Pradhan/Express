@@ -77,9 +77,7 @@ app.patch("/api/users/:id", (req, res) => {
   } = req;
 
   const parsedid = parseInt(id);
-  console.log(parsedid);
   if (isNaN(parsedid)) {
-    console.log(parsedid);
     return res.status(400).send("Bad Request: Invalid ID");
   }
 
@@ -90,6 +88,28 @@ app.patch("/api/users/:id", (req, res) => {
   if (findUserIndex === -1) res.end("Invalid Id").sendStatus(400);
   users[findUserIndex] = { ...users[findUserIndex], ...body };
   return res.send("Updated successfully");
+});
+
+app.delete("/api/users/:id", (req, res) => {
+  const {
+    params: { id },
+  } = req;
+
+  // Validate the ID format
+  if (!/^\d+$/.test(id)) {
+    return res.status(400).send("Bad Request: Invalid ID");
+  }
+
+  const parsedid = parseInt(id, 10);
+
+  const findUserIndex = users.findIndex((user) => user.id === parsedid);
+  if (findUserIndex === -1) {
+    return res.status(404).send("User not found");
+  }
+
+  users.splice(findUserIndex, 1);
+
+  return res.status(200).send("User Deleted");
 });
 
 app.listen(PORT, () => {
