@@ -4,6 +4,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const host = "localhost";
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.send("home route");
 });
@@ -34,7 +36,9 @@ app.get("/api/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
   console.log(req.body);
-  res.sendStatus(200);
+  const newUser = { id: users.length + 1, ...req.body };
+  users.push(newUser);
+  res.status(200).send("user added succesfully");
 });
 
 app.listen(PORT, () => {
