@@ -32,6 +32,11 @@ app.get("/api/users/:id", (req, res) => {
   res.status(200).json(findid);
 });
 
+app.post("/users", (req, res) => {
+  console.log(req.body);
+  res.sendStatus(200);
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening at http://${host}:${PORT}`);
 });
