@@ -41,6 +41,57 @@ app.post("/users", (req, res) => {
   res.status(200).send("user added succesfully");
 });
 
+app.put("/api/users/:id", (req, res) => {
+  if (!/^\d+$/.test(req.params.id)) {
+    return res.status(400).send("Bad Request: Invalid ID");
+  }
+
+  const {
+    body,
+    params: { id },
+  } = req;
+
+  const parsedid = parseInt(id);
+
+  if (isNaN(parsedid)) {
+    return res.status(400).send("Bad Request: Invalid ID");
+  }
+
+  if (!parsedid) {
+    return res.status(404).send("User not found");
+  }
+  const findUserIndex = users.findIndex((user) => user.id === parsedid);
+  if (findUserIndex === -1) res.end("Invalid Id").sendStatus(400);
+  users[findUserIndex] = { id: parsedid, ...body };
+  return res.send("Updated successfully");
+});
+
+app.patch("/api/users/:id", (req, res) => {
+  if (!/^\d+$/.test(req.params.id)) {
+    return res.status(400).send("Bad Request: Invalid ID");
+  }
+
+  const {
+    body,
+    params: { id },
+  } = req;
+
+  const parsedid = parseInt(id);
+  console.log(parsedid);
+  if (isNaN(parsedid)) {
+    console.log(parsedid);
+    return res.status(400).send("Bad Request: Invalid ID");
+  }
+
+  if (!parsedid) {
+    return res.status(404).send("User not found");
+  }
+  const findUserIndex = users.findIndex((user) => user.id === parsedid);
+  if (findUserIndex === -1) res.end("Invalid Id").sendStatus(400);
+  users[findUserIndex] = { ...users[findUserIndex], ...body };
+  return res.send("Updated successfully");
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening at http://${host}:${PORT}`);
 });
