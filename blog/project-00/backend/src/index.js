@@ -95,7 +95,6 @@ app.delete("/api/users/:id", (req, res) => {
     params: { id },
   } = req;
 
-  // Validate the ID format
   if (!/^\d+$/.test(id)) {
     return res.status(400).send("Bad Request: Invalid ID");
   }

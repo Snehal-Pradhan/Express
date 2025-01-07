@@ -1,0 +1,8 @@
+Mongo DB
+
+nosql document based database
+strong support for aggregation pipes
+works on BSON format
+Best for node application
+
+
